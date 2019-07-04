@@ -1,0 +1,13 @@
+.selectToon {
+    display: inline-block;
+}
+
+.toon-button {
+    width: 100px;
+    height: 100px;
+}
+
+.button-image {
+    width: 100px;
+    height: 100px;
+}
