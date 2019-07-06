@@ -1,3 +1,4 @@
+
 // Object of toons
 var luke = {
     name: "luke",
@@ -33,8 +34,7 @@ var userDefender = {
         if (this.toonSelected == false) {
             this.toonSelected = true;
             this.selected = x;
-
-            console.log("this got ran")
+            board.drawCards();
         };
     },
 };
@@ -45,19 +45,16 @@ var userToon = {
     selected: "",
 
     selectedMe: function (x) {
-        console.log("got here for" + x);
-        if (this.toonSelected == true) {
-            userDefender.selectedMe(x)
-        } else if (this.toonSelected == false) {
+        if (this.toonSelected == false) {
             this.toonSelected = true;
             this.selected = x;
+            board.drawCards();
         } 
 
     },
 
 
 };
-
 
 
 var userEnemies = {
@@ -87,7 +84,7 @@ var board = {
         for (i = 0; i < this.toons.length; i++) {
             //creating DIV container
             var toonBtn = $("<div>");
-            toonBtn.addClass("toon toon-button toon-button-color");
+            toonBtn.addClass("toon-button");
             toonBtn.attr("data-name", this.toons[i].name);
 
             //name container
@@ -137,24 +134,34 @@ var board = {
         $(".userToon").html(userSelected);
         $(".defendingToon").html(defenderSelected);
         $(".enemyToon").html(enemySelected);
+        waitClick();
     },
 
 
 
 };
 
-$("document").ready(function () {
-    //creates object buttons
-    board.drawCards();
 
-    //detect click
-    $(".toon").on("click", function () {
+//detect click
+function waitClick(){
+    $(".toon-button").on("click", function () {
         //if user hasn't selected their toon yet
         var toon = ($(this).attr("data-name"));
-
-        userToon.selectedMe(toon);
-        board.drawCards();
-    
+        console.log(toon);
+        
+        // userToon.selectedMe(toon);
+        // board.drawCards();
+        
+        if (userToon.toonSelected === false) {
+            userToon.selectedMe(toon);
+        }  else if (userDefender.toonSelected === false) {
+            userDefender.selectedMe(toon);
+        }
+        
+        
     })
+}
 
-});
+//creates object buttons
+board.drawCards();
+
