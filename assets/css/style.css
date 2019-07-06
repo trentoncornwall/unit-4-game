@@ -18,8 +18,9 @@
 }
 
 .button-image {
-    width: 100px;
-    height: 100px;
+    border: 2px solid black;
+    width: 96px;
+    height: 94px;
 }
 
 .button-hp {

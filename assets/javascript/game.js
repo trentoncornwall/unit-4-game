@@ -1,26 +1,33 @@
-
 // Object of toons
 var luke = {
     name: "luke",
     hp: 130,
+    alive: true,
+    alignment: '',
     image: "assets/images/luke.png",
 };
 
 var yoda = {
     name: "yoda",
     hp: 100,
+    alive: true,
+    alignment: '',
     image: "assets/images/yoda.png",
 };
 
 var vader = {
     name: "vader",
     hp: 140,
+    alive: true,
+    alignment: '',
     image: "assets/images/vader.png",
 };
 
 var maul = {
     name: "maul",
     hp: 125,
+    alive: true,
+    alignment: '',
     image: "assets/images/maul.png",
 };
 
@@ -28,44 +35,64 @@ var maul = {
 //use ojbect
 var userDefender = {
     toonSelected: false,
+
+    //stores object here
     selected: "",
 
     selectedMe: function (x) {
+        //if userDefender hasn't been selected yet
         if (this.toonSelected == false) {
             this.toonSelected = true;
-            this.selected = x;
+        
+            //stores object in selected
+            for (i=0; i < board.toons.length; i++) {
+                if (board.toons[i].name === x) {
+                    this.selected = board.toons[i];
+                };
+            };
             board.drawCards();
         };
     },
+
+    takeDamage: function(x) {
+        this.selected.hp -= x;
+        board.drawCards();
+    }
 };
 
 
 var userToon = {
     toonSelected: false,
+
+    //this will hold object toon
     selected: "",
 
     selectedMe: function (x) {
+        //if userToon hasn't been selcted yet
         if (this.toonSelected == false) {
             this.toonSelected = true;
-            this.selected = x;
+            //sets selected as the object
+            for (i=0; i < board.toons.length; i++) {
+                if (board.toons[i].name === x) {
+                    this.selected = board.toons[i];
+                };
+            };
             board.drawCards();
-        } 
-
+        }
     },
 
+    takeDamage: function(x) {
+        this.selected.hp -= x;
+        this.healthCheck();
+        board.drawCards();
+    },
 
+    healthCheck: function() {
+        if (this.selected.hp <= 0){
+            console.log("dead")
+        }
+    }
 };
-
-
-var userEnemies = {
-    toonSelected: false,
-    selected: ""
-
-};
-
-
-
-
 
 //creates board
 var board = {
@@ -109,27 +136,26 @@ var board = {
             toonBtn.append(toonBtnImg);
             toonBtn.append(toonBtnHp);
 
-
             //identifies were toonBtn supposed to go
             if (userToon.toonSelected === true) {
                 //selects the users toon
-                if (this.toons[i].name === userToon.selected) {
+                if (this.toons[i].name === userToon.selected.name) {
                     userSelected.append(toonBtn);
-                //selects the defender toon
-                } else if (this.toons[i].name === userDefender.selected) {
+                    //selects the defender toon
+                } else if (this.toons[i].name === userDefender.selected.name) {
                     defenderSelected.append(toonBtn);
-                //else puts everthing into enemies
+                    //else puts everthing into enemies
                 } else {
                     enemySelected.append(toonBtn);
                 }
-            //or puts everything on top
+                //or puts everything on top
             } else {
                 unselected.append(toonBtn)
             }
 
         };
 
-
+        //prints all toons where they should go
         $(".selectToon").html(unselected);
         $(".userToon").html(userSelected);
         $(".defendingToon").html(defenderSelected);
@@ -141,27 +167,37 @@ var board = {
 
 };
 
-
 //detect click
-function waitClick(){
+function waitClick() {
+
+    //if user selects a toon
     $(".toon-button").on("click", function () {
         //if user hasn't selected their toon yet
         var toon = ($(this).attr("data-name"));
-        console.log(toon);
-        
-        // userToon.selectedMe(toon);
-        // board.drawCards();
-        
+
+        //logic to identify users choices
+        //user hasn't selected their toon yet        
         if (userToon.toonSelected === false) {
             userToon.selectedMe(toon);
-        }  else if (userDefender.toonSelected === false) {
+
+            //user has detected their toon and choosing defender
+        } else if (userDefender.toonSelected === false) {
             userDefender.selectedMe(toon);
         }
-        
-        
-    })
+    });
+
+
+
+    //if user selects attack
+    $("#attack").on("click", function () {
+        //rolls 1d20
+        var userDamage = Math.floor(Math.random() * 20);
+        var defenderDamage = Math.floor(Math.random() * 2)
+        //takes damage
+        userDefender.takeDamage(userDamage);
+        userToon.takeDamage(defenderDamage);
+    });
 }
 
-//creates object buttons
+//creates inital object buttons
 board.drawCards();
-
