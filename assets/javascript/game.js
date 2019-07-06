@@ -30,23 +30,29 @@ var userDefender = {
     selected: "",
 
     selectedMe: function (x) {
-        if (this.toonSelected === false) {
+        if (this.toonSelected == false) {
             this.toonSelected = true;
             this.selected = x;
+
+            console.log("this got ran")
         };
     },
 };
+
+
 var userToon = {
     toonSelected: false,
     selected: "",
 
     selectedMe: function (x) {
-        if (this.toonSelected === false) {
+        console.log("got here for" + x);
+        if (this.toonSelected == true) {
+            userDefender.selectedMe(x)
+        } else if (this.toonSelected == false) {
             this.toonSelected = true;
             this.selected = x;
-        } else {
-            userDefender.selectedMe(x);
-        };
+        } 
+
     },
 
 
@@ -75,6 +81,7 @@ var board = {
         var unselected = $("<div>");
         var userSelected = $("<div>");
         var defenderSelected = $("<div>");
+        var enemySelected = $("<div>");
 
         //loop set to create new buttons and place them were they should go
         for (i = 0; i < this.toons.length; i++) {
@@ -107,19 +114,29 @@ var board = {
 
 
             //identifies were toonBtn supposed to go
-            if (this.toons[i].name === userToon.selected) {
-                userSelected.append(toonBtn);
-
-            } else if (this.toons[i].name === userDefender.selected) {
-
-                defenderSelected.append(toonBtn);
+            if (userToon.toonSelected === true) {
+                //selects the users toon
+                if (this.toons[i].name === userToon.selected) {
+                    userSelected.append(toonBtn);
+                //selects the defender toon
+                } else if (this.toons[i].name === userDefender.selected) {
+                    defenderSelected.append(toonBtn);
+                //else puts everthing into enemies
+                } else {
+                    enemySelected.append(toonBtn);
+                }
+            //or puts everything on top
             } else {
-                unselected.append(toonBtn);
+                unselected.append(toonBtn)
             }
+
         };
+
+
         $(".selectToon").html(unselected);
         $(".userToon").html(userSelected);
         $(".defendingToon").html(defenderSelected);
+        $(".enemyToon").html(enemySelected);
     },
 
 
@@ -129,16 +146,15 @@ var board = {
 $("document").ready(function () {
     //creates object buttons
     board.drawCards();
+
     //detect click
-    $(".toon-button").on("click", function () {
+    $(".toon").on("click", function () {
         //if user hasn't selected their toon yet
         var toon = ($(this).attr("data-name"));
 
         userToon.selectedMe(toon);
         board.drawCards();
-
-
+    
     })
 
-    //else select enemy
 });
