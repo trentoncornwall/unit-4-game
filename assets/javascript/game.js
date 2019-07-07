@@ -83,8 +83,9 @@ var userToon = {
 
     takeDamage: function(x) {
         this.selected.hp -= x;
-        this.healthCheck();
-        board.drawCards();
+        // this.healthCheck();
+
+        // board.drawCards();
     },
 
     healthCheck: function() {
@@ -186,17 +187,16 @@ function waitClick() {
         }
     });
 
+    
+    
+}
 
+function attack(){
+    var defenderRoll = Math.floor(Math.random() * 40);
+    var attackerRoll = Math.floor(Math.random() * 40);
 
-    //if user selects attack
-    $("#attack").on("click", function () {
-        //rolls 1d20
-        var userDamage = Math.floor(Math.random() * 20);
-        var defenderDamage = Math.floor(Math.random() * 2)
-        //takes damage
-        userDefender.takeDamage(userDamage);
-        userToon.takeDamage(defenderDamage);
-    });
+    userDefender.takeDamage(attackerRoll);
+    userToon.takeDamage(defenderRoll);
 }
 
 //creates inital object buttons
