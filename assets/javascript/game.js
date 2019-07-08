@@ -43,9 +43,9 @@ var userDefender = {
         //if userDefender hasn't been selected yet
         if (this.toonSelected == false) {
             this.toonSelected = true;
-        
+
             //stores object in selected
-            for (i=0; i < board.toons.length; i++) {
+            for (i = 0; i < board.toons.length; i++) {
                 if (board.toons[i].name === x) {
                     this.selected = board.toons[i];
                 };
@@ -54,9 +54,21 @@ var userDefender = {
         };
     },
 
-    takeDamage: function(x) {
+    takeDamage: function (x) {
         this.selected.hp -= x;
+        //checks if dead
+        if (this.selected.hp <= 0) {
+            this.isDead();
+        }
         board.drawCards();
+    },
+
+    isDead: function () {
+        console.log("userDefender :" + this.selected.name + " has died");
+        //unselected, toon selected turns back to false
+        board.toons.splice(board.toons.indexOf(this.selected), 1)
+        this.selected = "";
+        this.toonSelected = false;
     }
 };
 
@@ -72,7 +84,7 @@ var userToon = {
         if (this.toonSelected == false) {
             this.toonSelected = true;
             //sets selected as the object
-            for (i=0; i < board.toons.length; i++) {
+            for (i = 0; i < board.toons.length; i++) {
                 if (board.toons[i].name === x) {
                     this.selected = board.toons[i];
                 };
@@ -81,17 +93,22 @@ var userToon = {
         }
     },
 
-    takeDamage: function(x) {
-        this.selected.hp -= x;
-        // this.healthCheck();
 
-        // board.drawCards();
+    takeDamage: function (x) {
+        this.selected.hp -= x;
+        //checks if dead
+        if (this.selected.hp <= 0) {
+            this.isDead();
+        }
+        board.drawCards();
     },
 
-    healthCheck: function() {
-        if (this.selected.hp <= 0){
-            console.log("dead")
-        }
+    isDead: function () {
+        console.log("userDefender :" + this.selected.name + " has died");
+        //unselected, toon selected turns back to false
+        board.toons.splice(board.toons.indexOf(this.selected), 1)
+        this.selected = "";
+        this.toonSelected = false;
     }
 };
 
@@ -187,11 +204,11 @@ function waitClick() {
         }
     });
 
-    
-    
+
+
 }
 
-function attack(){
+function attack() {
     var defenderRoll = Math.floor(Math.random() * 40);
     var attackerRoll = Math.floor(Math.random() * 40);
 
