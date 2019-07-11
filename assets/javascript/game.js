@@ -3,7 +3,7 @@ var luke = {
     name: "luke",
     hp: 130,
     alive: true,
-    alignment: '',
+
     image: "assets/images/luke.png",
 };
 
@@ -11,7 +11,7 @@ var yoda = {
     name: "yoda",
     hp: 100,
     alive: true,
-    alignment: '',
+
     image: "assets/images/yoda.png",
 };
 
@@ -19,7 +19,7 @@ var vader = {
     name: "vader",
     hp: 140,
     alive: true,
-    alignment: '',
+
     image: "assets/images/vader.png",
 };
 
@@ -27,7 +27,7 @@ var maul = {
     name: "maul",
     hp: 125,
     alive: true,
-    alignment: '',
+
     image: "assets/images/maul.png",
 };
 
@@ -63,6 +63,7 @@ var userDefender = {
         board.drawCards();
     },
 
+
     isDead: function () {
         console.log("userDefender :" + this.selected.name + " has died");
         //unselected, toon selected turns back to false
@@ -76,8 +77,11 @@ var userDefender = {
 var userToon = {
     toonSelected: false,
 
-    //this will hold object toon
+    //this will hold obje ct toon
     selected: "",
+
+    healsLeft: 5,
+    specialsLeft: 4,
 
     selectedMe: function (x) {
         //if userToon hasn't been selcted yet
@@ -100,6 +104,16 @@ var userToon = {
         if (this.selected.hp <= 0) {
             this.isDead();
         }
+        board.drawCards();
+    },
+
+    heal: function (x) {
+        this.selected.hp += x;
+
+        //checks if dead
+        if (this.selected.hp <= 0) {
+            this.isDead();
+        };
         board.drawCards();
     },
 
@@ -131,6 +145,14 @@ var board = {
             var toonBtn = $("<div>");
             toonBtn.addClass("toon-button");
             toonBtn.attr("data-name", this.toons[i].name);
+            //determine background color
+            if (this.toons[i].name === userToon.selected.name) {
+                toonBtn.attr("data-alignment", "good");
+            } else if (this.toons[i].name === userDefender.selected.name) {
+                toonBtn.attr("data-alignment", "enemy");
+            } else if (userToon.toonSelected === true) {
+                toonBtn.attr("data-alignment", "bad");
+            };
 
             //name container
             var toonBtnName = $("<span>");
@@ -207,14 +229,60 @@ function waitClick() {
 
 
 }
-
+//toons attack
 function attack() {
-    var defenderRoll = Math.floor(Math.random() * 40);
-    var attackerRoll = Math.floor(Math.random() * 40);
+    var defenderRoll = Math.floor(Math.random() * 15);
+    var attackerRoll = Math.floor(Math.random() * 20);
 
     userDefender.takeDamage(attackerRoll);
     userToon.takeDamage(defenderRoll);
+};
+
+
+//used for rolling special or mediate
+function fourDten() {
+    var min = Math.ceil(1);
+    var max = Math.floor(10);
+    var firstRoll = Math.floor(Math.random() * (max - min) + min);
+    var secondRoll = Math.floor(Math.random() * (max - min) + min);
+    var thirdRoll = Math.floor(Math.random() * (max - min) + min);
+    var forthRoll = Math.floor(Math.random() * (max - min) + min);
+    return (firstRoll + secondRoll + thirdRoll + forthRoll);
 }
 
-//creates inital object buttons
+// user mediates
+// enemy attacks
+function meditate() {
+    // roll die
+    var userHeal = fourDten()
+    var defenderRoll = Math.floor(Math.random() * 15);
+
+    //update button
+    userToon.healsLeft--
+    if (userToon.healsLeft <= 0) {
+        $("#meditate").html("meditate (heal:4d10)").css("text-decoration", "line-through");
+    } else {
+        userToon.heal(userHeal);
+        userToon.takeDamage(defenderRoll);
+        $("#meditate").html("meditate (heal: 4d10) (" + userToon.healsLeft + ")");
+    }
+}
+
+
+function special() {
+    var defenderRoll = Math.floor(Math.random() * 15);
+    var attackerRoll = fourDten();
+
+
+    userToon.specialsLeft--
+    if (userToon.specialsLeft <= 0) {
+        $("#special").html("special (damage:4d10)").css("text-decoration", "line-through");
+    } else {
+        userDefender.takeDamage(attackerRoll);
+        userToon.takeDamage(defenderRoll);
+        $("#special").html("special (damage: 4d10) (" + userToon.specialsLeft + ")");
+    }
+
+}
+
 board.drawCards();
