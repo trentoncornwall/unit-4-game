@@ -22,22 +22,23 @@
     <div id="board">
         <!-- 1 ro 3 columns with middle longer-->
         <div class="selectToon"></div>
-        <p>you</p>
         <!-- 1 row 3 colums-->
-        <div class="userToon"></div>
-        <p>defending</p>
-        <div class="defendingToon"></div>
+        <div class="centerboard">
 
+            <div class="userToon"></div>
+
+            <div class="defendingToon"></div>
+            <!-- Buttons -->
+            <div class="moves">
+                <button id="attack" onclick="attack()">attack (damage: 1d20) </button>
+                <button id="meditate" onclick="meditate()">meditate (heal: 4d10) (5)</button>
+                <button id="special" onclick="special()">special (damage: 3d10) (4)</button>
+            </div>
+        </div>
         <!-- last row-->
-        <p>enemies</p>
+
         <div class="enemyToon"></div>
 
-        <!-- Buttons -->
-        <div class="moves">
-            <button id="attack" onclick="attack()">attack (damage: 1d20) </button>
-            <button id="meditate" onclick="meditate()">meditate (heal: 4d10) (5)</button>
-            <button id="special" onclick="special()">special (damage: 3d10) (4)</button>
-        </div>
         <script src="assets/javascript/game.js"></script>
     </div>
 </body>
