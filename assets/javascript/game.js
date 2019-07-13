@@ -64,6 +64,7 @@ var userDefender = {
             this.isDead();
         }
         board.drawCards();
+        $("#denfenderlog").html("<span>" + this.selected.name + " took: " + x + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
     },
 
 
@@ -112,6 +113,7 @@ var userToon = {
         }
 
         board.drawCards();
+        $("#userlog").html("<span>" + "you took: " + x + " damage" + "</span>" + "</br>").css("color", "rgb(160, 75, 75)");
     },
 
     heal: function (x) {
@@ -214,6 +216,7 @@ var board = {
 
 };
 
+
 //detect click
 function waitClick() {
 
@@ -240,8 +243,8 @@ function waitClick() {
 function attack() {
     var defenderRoll = Math.floor(Math.random() * 15);
     var attackerRoll = Math.floor(Math.random() * 20);
-    $("#log").html("<span>" + "enemy took: " + defenderRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
-    $("#log").html("<span>" + "you took: " + attackerRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
+    // $("#log").html("<span>" + "enemy took: " + defenderRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
+    // $("#log").html("<span>" + "you took: " + attackerRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
     userDefender.takeDamage(attackerRoll);
     userToon.takeDamage(defenderRoll);
 };
@@ -273,7 +276,10 @@ function meditate() {
         userToon.heal(userHeal);
         userToon.takeDamage(defenderRoll);
         $("#meditate").html("<span>" + "heal (4d10) (" + userToon.healsLeft + ")" + "</span>");
+        $("#userlog").append("</br><span>" + "you heal: </br>" + userHeal + " hp" + "</span>").css("color", "rgb(89, 155, 89)")
     }
+
+
 }
 
 
