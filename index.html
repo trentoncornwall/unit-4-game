@@ -30,15 +30,19 @@
             <div class="defendingToon"></div>
             <!-- Buttons -->
             <div class="moves">
-                <button id="attack" onclick="attack()">attack (damage: 1d20) </button>
-                <button id="meditate" onclick="meditate()">meditate (heal: 4d10) (5)</button>
-                <button id="special" onclick="special()">special (damage: 3d10) (4)</button>
+                <button class="buttonattack" id="attack" onclick="attack()"><span>attack (1d20)</span></button>
+                <button class="buttonattack" id="special" onclick="special()"><span>special (4d10) (4)</span></button>
+                <button class="buttonheal" id="meditate" onclick="meditate()"><span>heal (4d10) (5)</span></button>
             </div>
         </div>
         <!-- last row-->
 
         <div class="enemyToon"></div>
 
+        <!-- logs info on rolls-->
+        <div id="logbox">
+            <div id="log"></div>
+        </div>
         <script src="assets/javascript/game.js"></script>
     </div>
 </body>

@@ -55,6 +55,9 @@ var userDefender = {
     },
 
     takeDamage: function (x) {
+        if (userDefender.toonSelected === false) {
+            return false
+        }
         this.selected.hp -= x;
         //checks if dead
         if (this.selected.hp <= 0) {
@@ -99,11 +102,15 @@ var userToon = {
 
 
     takeDamage: function (x) {
+        if (userDefender.toonSelected === false) {
+            return false
+        }
         this.selected.hp -= x;
         //checks if dead
         if (this.selected.hp <= 0) {
             this.isDead();
         }
+
         board.drawCards();
     },
 
@@ -233,7 +240,8 @@ function waitClick() {
 function attack() {
     var defenderRoll = Math.floor(Math.random() * 15);
     var attackerRoll = Math.floor(Math.random() * 20);
-
+    $("#log").html("<span>" + "enemy took: " + defenderRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
+    $("#log").html("<span>" + "you took: " + attackerRoll + " damage" + "</span>").css("color", "rgb(160, 75, 75)");
     userDefender.takeDamage(attackerRoll);
     userToon.takeDamage(defenderRoll);
 };
@@ -260,11 +268,11 @@ function meditate() {
     //update button
     userToon.healsLeft--
     if (userToon.healsLeft <= 0) {
-        $("#meditate").html("meditate (heal:4d10)").css("text-decoration", "line-through");
+        $("#meditate").html("<span>" + "heal (4d10)" + "</span>").addClass("disabled");
     } else {
         userToon.heal(userHeal);
         userToon.takeDamage(defenderRoll);
-        $("#meditate").html("meditate (heal: 4d10) (" + userToon.healsLeft + ")");
+        $("#meditate").html("<span>" + "heal (4d10) (" + userToon.healsLeft + ")" + "</span>");
     }
 }
 
@@ -276,11 +284,11 @@ function special() {
 
     userToon.specialsLeft--
     if (userToon.specialsLeft <= 0) {
-        $("#special").html("special (damage:4d10)").css("text-decoration", "line-through");
+        $("#special").html("<span>" + "special (4d10)" + "<span>").addClass("disabled");
     } else {
         userDefender.takeDamage(attackerRoll);
         userToon.takeDamage(defenderRoll);
-        $("#special").html("special (damage: 4d10) (" + userToon.specialsLeft + ")");
+        $("#special").html("<span>" + "special (4d10) (" + userToon.specialsLeft + ")" + "</span>");
     }
 
 }

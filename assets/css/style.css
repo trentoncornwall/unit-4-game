@@ -1,24 +1,45 @@
+@import url('https://fonts.googleapis.com/css?family=Karla&display=swap');
+
+body {
+    font-family: 'Karla', sans-serif;
+    font-variant: small-caps;
+    background-image: url("../images/background.jpg");
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: rgb(0, 0, 0);
+    background-size: cover;
+}
+
+/* **CSS GRID layout*/
 #board {
     height: 100vh;
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas:
         ". selectToon ."
         ". centerboard ."
-        ". enemyToon .";
+        ". enemyToon ."
+        ". logbox .";
     justify-items: center;
     align-items: center;
 }
 
+/* ** top selection */
 .selectToon {
     grid-area: selectToon;
     /* background-color: gray; */
 }
 
+/* ** this holds players toon, buttons, and defender when delcted */
 .centerboard {
     grid-area: centerboard;
+    height: 100%;
+    width: 100%;
     display: grid;
+    justify-items: center;
+    align-items: center;
     grid-template-columns: 33% 33% 33%;
     grid-template-areas:
         "userToon moves defendingToon";
@@ -32,29 +53,59 @@
 
 .moves {
     grid-area: moves;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
 
 }
 
 .defendingToon {
     grid-area: defendingToon;
-    /* background-color: royalblue; */
+
 
 }
 
+/* ** the enemy row of enemies you select */
 .enemyToon {
     grid-area: enemyToon;
-    /* background-color: rgb(100, 41, 100); */
+
 }
 
+/* ** log text box */
+#logbox {
+    grid-area: logbox;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+}
+
+#log {
+    width: 600px;
+    height: 120px;
+    border: 3px solid #cccccc;
+    padding: 5px;
+    background: transparent;
+    border: 0px;
+    pointer-events: none;
+    text-align: center;
+    color: white;
+    font-size: 16px;
+    resize: none;
+    overflow: auto;
+}
+
+/* **display of each toon card*/
 .toon-button {
     display: inline-block;
     border: 1px solid black;
-    background-color: rgb(158, 158, 158);
+    background-color: rgb(107, 107, 107);
     border-radius: 8px;
     overflow: hidden;
     margin: 10px;
     width: 100px;
     height: 140px;
+
 }
 
 [data-alignment="good"] {
@@ -70,6 +121,7 @@
 }
 
 .button-name {
+    font-size: 19px;
     color: white;
     margin: 35%;
     width: 100%;
@@ -81,6 +133,7 @@
     border: 2px solid black;
     width: 96px;
     height: 94px;
+
 }
 
 .button-hp {
@@ -91,18 +144,97 @@
     text-align: center;
 }
 
+/* **buttons for moves, attack special and heal */
+button {
+    position: relative;
+    margin: 10px;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    color: white;
+    cursor: pointer;
+    width: 100%;
+
+}
+
+.buttonattack span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonattack span:after {
+    content: '→';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: .75s;
+}
+
+.buttonattack:hover span {
+    padding-right: 25px;
+}
+
+.buttonattack:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.buttonheal span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+}
+
+.buttonheal span::before {
+    content: '←';
+    position: absolute;
+    opacity: 0;
+    transition: .75s;
+}
+
+.buttonheal:hover span {
+    padding-left: 25px;
+}
+
+.buttonheal:hover span:before {
+    opacity: 1;
+    left: 0;
+}
+
+
+#attack {
+    background-color: rgb(109, 30, 30);
+
+}
+
+#special {
+    background-color: rgb(233, 136, 72);
+}
+
+#meditate {
+    background-color: rgb(96, 190, 96);
+}
+
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ** repsonsive quries */
 @media screen and (max-width: 980px) {
     #board {
         height: 100vh;
         display: grid;
-        grid-template-columns: 5% 90% 5%;
-        grid-template-rows: 1fr 1fr 1fr;
-        grid-template-areas:
-            ". selectToon ."
-            ". centerboard ."
-            ". enemyToon .";
-        justify-items: center;
-        align-items: center;
+        grid-template-columns: 10% 80% 10%;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
     }
 
 
@@ -110,16 +242,15 @@
 
 @media screen and (max-width: 550px) {
     #board {
-        height: 100vh;
+        height: 80vh;
         display: grid;
         grid-template-columns: 1% 98% 1%;
-        grid-template-rows: 1fr 1fr 1fr;
-        grid-template-areas:
-            ". selectToon ."
-            ". centerboard ."
-            ". enemyToon .";
-        justify-items: center;
-        align-items: center;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+    }
+
+    #log {
+        width: 400px;
+        height: 100px;
     }
 
 
